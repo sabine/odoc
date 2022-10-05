@@ -25,11 +25,15 @@ let from_mld ~xref_base_uri ~resolver ~output ~warnings_options input =
     >>= fun resolved ->
     let page = Odoc_document.Comment.to_ir resolved.content in
     let config =
-      Odoc_html.Config.v ~semantic_uris:false ~indent:false ~flat:false
-        ~open_details:false ~omit_breadcrumbs:false ~omit_toc:false
+      Odoc_html.Config.Html_page.v ~semantic_uris:false ~indent:false
+        ~flat:false ~open_details:false ~omit_breadcrumbs:false ~omit_toc:false
         ~content_only:false ()
     in
-    let html = Odoc_html.Generator.doc ~config ~xref_base_uri page in
+    let html =
+      Odoc_html.Generator.doc
+        ~config:config.base
+        ~xref_base_uri page
+    in
     let oc = open_out (Fs.File.to_string output) in
     let fmt = Format.formatter_of_out_channel oc in
 
@@ -47,3 +51,8 @@ let from_mld ~xref_base_uri ~resolver ~output ~warnings_options input =
       | `Stop -> to_html [])
 
 (* TODO: Error? *)
+
+let render config page =
+  Odoc_html.Generator.render_fragment_with_meta ~config page
+
+let renderer = { Odoc_document.Renderer.name = "html-embeddable"; render }

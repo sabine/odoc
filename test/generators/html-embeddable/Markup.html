@@ -1,0 +1,62 @@
+{
+  "uses_katex": true,
+  "title": "Markup",
+  "kind": "BaseModule",
+  "breadcrumbs": [ { "name": "Markup", "href": "#" } ],
+  "toc": [
+    {
+      "title": "Sections",
+      "href": "#sections",
+      "children": [
+        {
+          "title": "Subsection headings",
+          "href": "#subsection-headings",
+          "children": [
+            {
+              "title": "Sub-subsection headings",
+              "href": "#sub-subsection-headings",
+              "children": []
+            },
+            {
+              "title": "Anchors",
+              "href": "#anchors",
+              "children": [
+                {
+                  "title": "Paragraph",
+                  "href": "#paragraph",
+                  "children": [
+                    {
+                      "title": "Subparagraph",
+                      "href": "#subparagraph",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    { "title": "Styling", "href": "#styling", "children": [] },
+    {
+      "title": "Links and references",
+      "href": "#links-and-references",
+      "children": []
+    },
+    {
+      "title": "Preformatted text",
+      "href": "#preformatted-text",
+      "children": []
+    },
+    { "title": "Lists", "href": "#lists", "children": [] },
+    { "title": "Unicode", "href": "#unicode", "children": [] },
+    { "title": "Raw HTML", "href": "#raw-html", "children": [] },
+    { "title": "Math", "href": "#math", "children": [] },
+    { "title": "Modules", "href": "#modules", "children": [] },
+    { "title": "Tags", "href": "#tags", "children": [] }
+  ],
+  "preamble": "<p>Here, we test the rendering of comment markup.</p>",
+  "content":
+    "<h2 id=\"sections\"><a href=\"#sections\" class=\"anchor\"></a>Sections</h2><p>Let's get these done first, because sections will be used to break\n  up the rest of this test.\n</p><p>Besides the section heading above, there are also</p><h3 id=\"subsection-headings\">\n <a href=\"#subsection-headings\" class=\"anchor\"></a>Subsection headings\n</h3><p>and</p><h4 id=\"sub-subsection-headings\">\n <a href=\"#sub-subsection-headings\" class=\"anchor\"></a>Sub-subsection\n  headings\n</h4><p>but odoc has banned deeper headings. There are also title headings,\n  but they are only allowed in mld files.\n</p><h4 id=\"anchors\"><a href=\"#anchors\" class=\"anchor\"></a>Anchors</h4><p>Sections can have attached <a href=\"#anchors\">Anchors</a>, and it \n is possible to <a href=\"#anchors\">link</a> to them. Links to section\n  headers should not be set in source code style.\n</p><h5 id=\"paragraph\"><a href=\"#paragraph\" class=\"anchor\"></a>Paragraph</h5><p>Individual paragraphs can have a heading.</p><h6 id=\"subparagraph\"><a href=\"#subparagraph\" class=\"anchor\"></a>Subparagraph\n</h6><p>Parts of a longer paragraph that can be considered alone can also \n have headings.\n</p><h2 id=\"styling\"><a href=\"#styling\" class=\"anchor\"></a>Styling</h2><p>This paragraph has some styled elements: <b>bold</b> and <i>italic</i>\n , <b><i>bold italic</i></b>, <em>emphasis</em>, \n <em><em class=\"odd\">emphasis</em> within emphasis</em>, \n <b><i>bold italic</i></b>, super<sup>script</sup>, sub<sub>script</sub>\n . The line spacing should be enough for superscripts and subscripts \n not to look odd.\n</p><p>Note: \n <i>In italics <em>emphasis</em> is rendered as normal text while \n  <em>emphasis <em class=\"odd\">in</em> emphasis</em> is rendered in italics.\n </i> \n <i>It also work the same in \n  <a href=\"#\">links in italics with \n   <em>emphasis <em class=\"odd\">in</em> emphasis</em>.\n  </a>\n </i>\n</p><p><code>code</code> is a different kind of markup that doesn't allow\n  nested markup.\n</p><p>It's possible for two markup elements to appear <b>next</b> <i>to</i>\n  each other and have a space, and appear <b>next</b><i>to</i> each other\n  with no space. It doesn't matter <b>how</b> <i>much</i> space it was\n  in the source: in this sentence, it was two space characters. And in\n  this one, there is <b>a</b> <i>newline</i>.\n</p><p>This is also true between <em>non-</em><code>code</code> markup \n <em>and</em> <code>code</code>.\n</p><p>Code can appear <b>inside <code>other</code> markup</b>. Its display\n  shouldn't be affected.\n</p><h2 id=\"links-and-references\">\n <a href=\"#links-and-references\" class=\"anchor\"></a>Links and references\n</h2><p>This is a <a href=\"#\">link</a>. It sends you to the top of this page.\n  Links can have markup inside them: <a href=\"#\"><b>bold</b></a>, \n <a href=\"#\"><i>italics</i></a>, <a href=\"#\"><em>emphasis</em></a>, \n <a href=\"#\">super<sup>script</sup></a>, <a href=\"#\">sub<sub>script</sub></a>\n , and <a href=\"#\"><code>code</code></a>. Links can also be nested \n <em><a href=\"#\">inside</a></em> markup. Links cannot be nested inside\n  each other. This link has no replacement text: <a href=\"#\">#</a>. The\n  text is filled in by odoc. This is a shorthand link: <a href=\"#\">#</a>\n . The text is also filled in by odoc in this case.\n</p><p>This is a reference to <a href=\"#val-foo\"><code>foo</code></a>. References\n  can have replacement text: <a href=\"#val-foo\">the value foo</a>. Except\n  for the special lookup support, references are pretty much just like\n  links. The replacement text can have nested styles: \n <a href=\"#val-foo\"><b>bold</b></a>, <a href=\"#val-foo\"><i>italic</i></a>\n , <a href=\"#val-foo\"><em>emphasis</em></a>, \n <a href=\"#val-foo\">super<sup>script</sup></a>, \n <a href=\"#val-foo\">sub<sub>script</sub></a>, and \n <a href=\"#val-foo\"><code>code</code></a>. It's also possible to surround\n  a reference in a style: <b><a href=\"#val-foo\"><code>foo</code></a></b>\n . References can't be nested inside references, and links and references\n  can't be nested inside each other.\n</p><h2 id=\"preformatted-text\"><a href=\"#preformatted-text\" class=\"anchor\"></a>\n Preformatted text\n</h2><p>This is a code block:</p><pre class=\"language-ocaml\">\n <code>\n  let foo = ()\n  (** There are some nested comments in here, but an unpaired comment\n      terminator would terminate the whole doc surrounding comment. It's\n      best to keep code blocks no wider than 72 characters. *)\n  \n  let bar =\n    ignore foo\n </code>\n</pre><p>There are also verbatim blocks:</p><pre>The main difference is these don't get syntax highlighting.</pre><h2 id=\"lists\"><a href=\"#lists\" class=\"anchor\"></a>Lists</h2><ul><li>This is a</li><li>shorthand bulleted list,</li>\n <li>and the paragraphs in each list item support <em>styling</em>.</li>\n</ul><ol><li>This is a</li><li>shorthand numbered list.</li></ol><ul>\n <li>Shorthand list items can span multiple lines, however trying to \n  put two paragraphs into a shorthand list item using a double line break\n </li>\n</ul><p>just creates a paragraph outside the list.</p><ul><li>Similarly, inserting a blank line between two list items</li></ul><ul><li>creates two separate lists.</li></ul><ul>\n <li><p>To get around this limitation, one</p>\n  <p>can use explicitly-delimited lists.</p>\n </li><li>This one is bulleted,</li>\n</ul><ol><li>but there is also the numbered variant.</li></ol><ul>\n <li>\n  <ul><li>lists</li><li>can be nested</li><li>and can include references</li>\n   <li><a href=\"#val-foo\"><code>foo</code></a></li>\n  </ul>\n </li>\n</ul><h2 id=\"unicode\"><a href=\"#unicode\" class=\"anchor\"></a>Unicode</h2><p>The parser supports any ASCII-compatible encoding, in particuλar UTF-8.\n</p><h2 id=\"raw-html\"><a href=\"#raw-html\" class=\"anchor\"></a>Raw HTML</h2><p>Raw HTML can be <input type=\"text\" placeholder=\"inserted\"> as inline\n  elements into sentences.\n</p>\n    <blockquote>\n      If the raw HTML is the only thing in a paragraph, it is treated as a block\n      element, and won't be wrapped in paragraph tags by the HTML generator.\n    </blockquote>\n    <h2 id=\"math\"><a href=\"#math\" class=\"anchor\"></a>Math</h2><p>Math elements can be inline: \n <code class=\"odoc-katex-math\">\\int_{-\\infty}^\\infty</code>, or blocks:\n</p><div>\n <pre class=\"odoc-katex-math display\">\n      % \\f is defined as #1f(#2) using the macro\n      \\newcommand{\\f}[2]{#1f(#2)}\n      \\f\\relax{x} = \\int_{-\\infty}^\\infty\n      \\f\\hat\\xi\\,e^{2 \\pi i \\xi x}\n      \\,d\\xi\n      \n </pre>\n</div><h2 id=\"modules\"><a href=\"#modules\" class=\"anchor\"></a>Modules</h2><ul class=\"modules\"><li><a href=\"Markup-X.html\"><code>X</code></a> </li></ul><ul class=\"modules\"><li><a href=\"Markup-X.html\"><code>X</code></a> </li>\n <li><a href=\"Markup-Y.html\"><code>Y</code></a> </li>\n</ul><h2 id=\"tags\"><a href=\"#tags\" class=\"anchor\"></a>Tags</h2><p>Each comment can end with zero or more tags. Here are some examples:</p><ul class=\"at-tags\">\n <li class=\"author\"><span class=\"at-tag\">author</span> antron</li>\n</ul><ul class=\"at-tags\">\n <li class=\"deprecated\"><span class=\"at-tag\">deprecated</span> \n  <p>a <em>long</em> time ago</p>\n </li>\n</ul><ul class=\"at-tags\">\n <li class=\"parameter\"><span class=\"at-tag\">parameter</span> \n  <span class=\"value\">foo</span> <p>unused</p>\n </li>\n</ul><ul class=\"at-tags\">\n <li class=\"raises\"><span class=\"at-tag\">raises</span> \n  <span class=\"value\">Failure</span> <p>always</p>\n </li>\n</ul><ul class=\"at-tags\">\n <li class=\"returns\"><span class=\"at-tag\">returns</span> <p>never</p></li>\n</ul><ul class=\"at-tags\">\n <li class=\"see\"><span class=\"at-tag\">see</span> \n  <a href=\"#\" class=\"value\">#</a> <p>this url</p>\n </li>\n</ul><ul class=\"at-tags\">\n <li class=\"see\"><span class=\"at-tag\">see</span> \n  <code class=\"value\">foo.ml</code> <p>this file</p>\n </li>\n</ul><ul class=\"at-tags\">\n <li class=\"see\"><span class=\"at-tag\">see</span> \n  <span class=\"value\">Foo</span> <p>this document</p>\n </li>\n</ul><ul class=\"at-tags\">\n <li class=\"since\"><span class=\"at-tag\">since</span> 0</li>\n</ul><ul class=\"at-tags\">\n <li class=\"before\"><span class=\"at-tag\">before</span> \n  <span class=\"value\">1.0</span> <p>it was in b<sup>e</sup>t<sub>a</sub></p>\n </li>\n</ul><ul class=\"at-tags\">\n <li class=\"version\"><span class=\"at-tag\">version</span> -1</li>\n</ul><div class=\"odoc-spec\">\n <div class=\"spec value anchored\" id=\"val-foo\">\n  <a href=\"#val-foo\" class=\"anchor\"></a>\n  <code><span><span class=\"keyword\">val</span> foo : unit</span></code>\n </div>\n <div class=\"spec-doc\">\n  <p>Comments in structure items <b>support</b> <em>markup</em>, t\n   <sup>o</sup><sub>o</sub>.\n  </p>\n </div>\n</div><p>Some modules to support references.</p><div class=\"odoc-spec\">\n <div class=\"spec module anchored\" id=\"module-X\">\n  <a href=\"#module-X\" class=\"anchor\"></a>\n  <code>\n   <span><span class=\"keyword\">module</span> <a href=\"Markup-X.html\">X</a>\n   </span>\n   <span> : <span class=\"keyword\">sig</span> ... \n    <span class=\"keyword\">end</span>\n   </span>\n  </code>\n </div>\n</div><div class=\"odoc-spec\">\n <div class=\"spec module anchored\" id=\"module-Y\">\n  <a href=\"#module-Y\" class=\"anchor\"></a>\n  <code>\n   <span><span class=\"keyword\">module</span> <a href=\"Markup-Y.html\">Y</a>\n   </span>\n   <span> : <span class=\"keyword\">sig</span> ... \n    <span class=\"keyword\">end</span>\n   </span>\n  </code>\n </div>\n</div>"
+}

@@ -568,6 +568,18 @@
    (diff alerts.targets alerts.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    alerts.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../alerts.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff alerts.targets alerts.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Alerts.tex.gen)
@@ -658,6 +670,18 @@
    (diff alias.targets alias.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    alias.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../alias.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff alias.targets alias.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Alias.tex.gen Alias.X.tex.gen)
@@ -738,6 +762,18 @@
    (with-outputs-to
     bugs.targets.gen
     (run odoc html-targets -o . %{dep:../bugs.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff bugs.targets bugs.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    bugs.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../bugs.odocl} --flat))))
  (rule
   (alias runtest)
   (action
@@ -839,6 +875,28 @@
    (with-outputs-to
     bugs_post_406.targets.gen
     (run odoc html-targets -o . %{dep:../bugs_post_406.odocl} --flat)))
+  (enabled_if
+   (>= %{ocaml_version} 4.06)))
+ (rule
+  (alias runtest)
+  (action
+   (diff bugs_post_406.targets bugs_post_406.targets.gen))
+  (enabled_if
+   (>= %{ocaml_version} 4.06))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    bugs_post_406.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../bugs_post_406.odocl}
+     --flat)))
   (enabled_if
    (>= %{ocaml_version} 4.06)))
  (rule
@@ -967,6 +1025,28 @@
    (with-outputs-to
     bugs_pre_410.targets.gen
     (run odoc html-targets -o . %{dep:../bugs_pre_410.odocl} --flat)))
+  (enabled_if
+   (<= %{ocaml_version} 4.09)))
+ (rule
+  (alias runtest)
+  (action
+   (diff bugs_pre_410.targets bugs_pre_410.targets.gen))
+  (enabled_if
+   (<= %{ocaml_version} 4.09))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    bugs_pre_410.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../bugs_pre_410.odocl}
+     --flat)))
   (enabled_if
    (<= %{ocaml_version} 4.09)))
  (rule
@@ -1135,6 +1215,18 @@
    (diff class.targets class.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    class.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../class.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff class.targets class.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets
@@ -1268,6 +1360,28 @@
    (with-outputs-to
     class_comments.targets.gen
     (run odoc html-targets -o . %{dep:../class_comments.odocl} --flat)))
+  (enabled_if
+   (>= %{ocaml_version} 4.08)))
+ (rule
+  (alias runtest)
+  (action
+   (diff class_comments.targets class_comments.targets.gen))
+  (enabled_if
+   (>= %{ocaml_version} 4.08))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    class_comments.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../class_comments.odocl}
+     --flat)))
   (enabled_if
    (>= %{ocaml_version} 4.08)))
  (rule
@@ -1416,6 +1530,18 @@
    (diff external.targets external.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    external.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../external.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff external.targets external.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets External.tex.gen)
@@ -1551,6 +1677,18 @@
    (with-outputs-to
     functor.targets.gen
     (run odoc html-targets -o . %{dep:../functor.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff functor.targets functor.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    functor.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../functor.odocl} --flat))))
  (rule
   (alias runtest)
   (action
@@ -1727,6 +1865,18 @@
    (diff functor2.targets functor2.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    functor2.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../functor2.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff functor2.targets functor2.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Functor2.tex.gen Functor2.X.tex.gen)
@@ -1856,6 +2006,18 @@
    (diff include.targets include.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    include.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../include.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff include.targets include.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Include.tex.gen)
@@ -1951,6 +2113,18 @@
    (with-outputs-to
     include2.targets.gen
     (run odoc html-targets -o . %{dep:../include2.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff include2.targets include2.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    include2.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../include2.odocl} --flat))))
  (rule
   (alias runtest)
   (action
@@ -2064,6 +2238,24 @@
    (diff include_sections.targets include_sections.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    include_sections.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../include_sections.odocl}
+     --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff include_sections.targets include_sections.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Include_sections.tex.gen)
@@ -2150,6 +2342,18 @@
    (with-outputs-to
     interlude.targets.gen
     (run odoc html-targets -o . %{dep:../interlude.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff interlude.targets interlude.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    interlude.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../interlude.odocl} --flat))))
  (rule
   (alias runtest)
   (action
@@ -2268,6 +2472,22 @@
    (with-outputs-to
     labels.targets.gen
     (run odoc html-targets -o . %{dep:../labels.odocl} --flat)))
+  (enabled_if
+   (>= %{ocaml_version} 4.09)))
+ (rule
+  (alias runtest)
+  (action
+   (diff labels.targets labels.targets.gen))
+  (enabled_if
+   (>= %{ocaml_version} 4.09))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    labels.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../labels.odocl} --flat)))
   (enabled_if
    (>= %{ocaml_version} 4.09)))
  (rule
@@ -2398,6 +2618,18 @@
    (diff markup.targets markup.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    markup.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../markup.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff markup.targets markup.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Markup.tex.gen)
@@ -2478,6 +2710,18 @@
    (with-outputs-to
     page-mld.targets.gen
     (run odoc html-targets -o . %{dep:../page-mld.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff page-mld.targets page-mld.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    page-mld.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../page-mld.odocl} --flat))))
  (rule
   (alias runtest)
   (action
@@ -2643,6 +2887,18 @@
    (diff module.targets module.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    module.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../module.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff module.targets module.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Module.tex.gen)
@@ -2788,6 +3044,24 @@
    (with-outputs-to
     module_type_alias.targets.gen
     (run odoc html-targets -o . %{dep:../module_type_alias.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff module_type_alias.targets module_type_alias.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    module_type_alias.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../module_type_alias.odocl}
+     --flat))))
  (rule
   (alias runtest)
   (action
@@ -3204,6 +3478,28 @@
    (>= %{ocaml_version} 4.13))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    module_type_subst.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../module_type_subst.odocl}
+     --flat)))
+  (enabled_if
+   (>= %{ocaml_version} 4.13)))
+ (rule
+  (alias runtest)
+  (action
+   (diff module_type_subst.targets module_type_subst.targets.gen))
+  (enabled_if
+   (>= %{ocaml_version} 4.13))))
+
+(subdir
  latex
  (rule
   (targets Module_type_subst.tex.gen)
@@ -3371,6 +3667,18 @@
    (with-outputs-to
     nested.targets.gen
     (run odoc html-targets -o . %{dep:../nested.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff nested.targets nested.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    nested.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../nested.odocl} --flat))))
  (rule
   (alias runtest)
   (action
@@ -4985,6 +5293,22 @@
    (>= %{ocaml_version} 4.07))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    ocamlary.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../ocamlary.odocl} --flat)))
+  (enabled_if
+   (>= %{ocaml_version} 4.07)))
+ (rule
+  (alias runtest)
+  (action
+   (diff ocamlary.targets ocamlary.targets.gen))
+  (enabled_if
+   (>= %{ocaml_version} 4.07))))
+
+(subdir
  latex
  (rule
   (targets
@@ -5883,6 +6207,22 @@
    (>= %{ocaml_version} 4.09))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    recent.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../recent.odocl} --flat)))
+  (enabled_if
+   (>= %{ocaml_version} 4.09)))
+ (rule
+  (alias runtest)
+  (action
+   (diff recent.targets recent.targets.gen))
+  (enabled_if
+   (>= %{ocaml_version} 4.09))))
+
+(subdir
  latex
  (rule
   (targets Recent.tex.gen)
@@ -6077,6 +6417,28 @@
    (>= %{ocaml_version} 4.09))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    recent_impl.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../recent_impl.odocl}
+     --flat)))
+  (enabled_if
+   (>= %{ocaml_version} 4.09)))
+ (rule
+  (alias runtest)
+  (action
+   (diff recent_impl.targets recent_impl.targets.gen))
+  (enabled_if
+   (>= %{ocaml_version} 4.09))))
+
+(subdir
  latex
  (rule
   (targets Recent_impl.tex.gen Recent_impl.B.tex.gen)
@@ -6220,6 +6582,18 @@
    (diff section.targets section.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    section.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../section.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff section.targets section.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Section.tex.gen)
@@ -6304,6 +6678,18 @@
    (with-outputs-to
     stop.targets.gen
     (run odoc html-targets -o . %{dep:../stop.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff stop.targets stop.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    stop.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../stop.odocl} --flat))))
  (rule
   (alias runtest)
   (action
@@ -6404,6 +6790,28 @@
    (with-outputs-to
     stop_dead_link_doc.targets.gen
     (run odoc html-targets -o . %{dep:../stop_dead_link_doc.odocl} --flat)))
+  (enabled_if
+   (>= %{ocaml_version} 4.04)))
+ (rule
+  (alias runtest)
+  (action
+   (diff stop_dead_link_doc.targets stop_dead_link_doc.targets.gen))
+  (enabled_if
+   (>= %{ocaml_version} 4.04))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    stop_dead_link_doc.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../stop_dead_link_doc.odocl}
+     --flat)))
   (enabled_if
    (>= %{ocaml_version} 4.04)))
  (rule
@@ -6528,6 +6936,24 @@
    (diff stop_first_comment.targets stop_first_comment.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    stop_first_comment.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../stop_first_comment.odocl}
+     --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff stop_first_comment.targets stop_first_comment.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Stop_first_comment.tex.gen)
@@ -6614,6 +7040,18 @@
    (with-outputs-to
     tag_link.targets.gen
     (run odoc html-targets -o . %{dep:../tag_link.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff tag_link.targets tag_link.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    tag_link.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../tag_link.odocl} --flat))))
  (rule
   (alias runtest)
   (action
@@ -6786,6 +7224,24 @@
    (with-outputs-to
     toplevel_comments.targets.gen
     (run odoc html-targets -o . %{dep:../toplevel_comments.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff toplevel_comments.targets toplevel_comments.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    toplevel_comments.targets.gen
+    (run
+     odoc
+     html-embeddable-targets
+     -o
+     .
+     %{dep:../toplevel_comments.odocl}
+     --flat))))
  (rule
   (alias runtest)
   (action
@@ -6970,6 +7426,18 @@
    (diff type.targets type.targets.gen))))
 
 (subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    type.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../type.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff type.targets type.targets.gen))))
+
+(subdir
  latex
  (rule
   (targets Type.tex.gen)
@@ -7042,6 +7510,18 @@
    (with-outputs-to
     val.targets.gen
     (run odoc html-targets -o . %{dep:../val.odocl} --flat))))
+ (rule
+  (alias runtest)
+  (action
+   (diff val.targets val.targets.gen))))
+
+(subdir
+ html-embeddable
+ (rule
+  (action
+   (with-outputs-to
+    val.targets.gen
+    (run odoc html-embeddable-targets -o . %{dep:../val.odocl} --flat))))
  (rule
   (alias runtest)
   (action

@@ -1,47 +1,37 @@
 (* HTML output configuration *)
 
-type t = {
-  theme_uri : Types.uri option;
-  support_uri : Types.uri option;
-  semantic_uris : bool;
-  indent : bool;
-  flat : bool;
-  open_details : bool;
-  omit_breadcrumbs : bool;
-  omit_toc : bool;
-  content_only : bool;
-}
-
-let v ?theme_uri ?support_uri ~semantic_uris ~indent ~flat ~open_details
-    ~omit_breadcrumbs ~omit_toc ~content_only () =
-  {
-    theme_uri;
-    support_uri;
-    semantic_uris;
-    indent;
-    flat;
-    open_details;
-    omit_breadcrumbs;
-    omit_toc;
-    content_only;
+module Base = struct
+  type t = {
+    semantic_uris : bool;
+    indent : bool;
+    flat : bool;
+    open_details : bool;
   }
 
-let theme_uri config =
-  match config.theme_uri with None -> Types.Relative None | Some uri -> uri
+  let v ~semantic_uris ~indent ~flat ~open_details () =
+    { semantic_uris; indent; flat; open_details }
+end
 
-let support_uri config =
-  match config.support_uri with None -> Types.Relative None | Some uri -> uri
+module Html_page = struct
+  type t = {
+    base : Base.t;
+    theme_uri : Types.uri option;
+    support_uri : Types.uri option;
+    omit_breadcrumbs : bool;
+    omit_toc : bool;
+    content_only : bool;
+  }
 
-let semantic_uris config = config.semantic_uris
+  let v ?theme_uri ?support_uri ~semantic_uris ~indent ~flat ~open_details
+      ~omit_breadcrumbs ~omit_toc ~content_only () =
+    let base = { Base.semantic_uris; indent; flat; open_details } in
+    { base; theme_uri; support_uri; omit_breadcrumbs; omit_toc; content_only }
 
-let indent config = config.indent
+  let get_theme_uri config =
+    match config.theme_uri with None -> Types.Relative None | Some uri -> uri
 
-let flat config = config.flat
-
-let open_details config = config.open_details
-
-let omit_breadcrumbs config = config.omit_breadcrumbs
-
-let omit_toc config = config.omit_toc
-
-let content_only config = config.content_only
+  let get_support_uri config =
+    match config.support_uri with
+    | None -> Types.Relative None
+    | Some uri -> uri
+end

@@ -1,0 +1,67 @@
+{
+  "uses_katex": false,
+  "title": "Include_sections",
+  "kind": "BaseModule",
+  "breadcrumbs": [ { "name": "Include_sections", "href": "#" } ],
+  "toc": [
+    {
+      "title": "Something 1",
+      "href": "#something-1_2",
+      "children": [
+        { "title": "Something 2", "href": "#something-2_2", "children": [] }
+      ]
+    },
+    {
+      "title": "Something 1-bis",
+      "href": "#something-1-bis_2",
+      "children": []
+    },
+    {
+      "title": "Second include",
+      "href": "#second-include",
+      "children": [
+        {
+          "title": "Something 1",
+          "href": "#something-1_3",
+          "children": [
+            {
+              "title": "Something 2",
+              "href": "#something-2_3",
+              "children": []
+            }
+          ]
+        },
+        {
+          "title": "Something 1-bis",
+          "href": "#something-1-bis_3",
+          "children": []
+        },
+        {
+          "title": "Third include",
+          "href": "#third-include",
+          "children": [
+            {
+              "title": "Something 1",
+              "href": "#something-1_4",
+              "children": [
+                {
+                  "title": "Something 2",
+                  "href": "#something-2_4",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "title": "Something 1-bis",
+              "href": "#something-1-bis_4",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "preamble": "",
+  "content":
+    "<div class=\"odoc-spec\">\n <div class=\"spec module-type anchored\" id=\"module-type-Something\">\n  <a href=\"#module-type-Something\" class=\"anchor\"></a>\n  <code>\n   <span><span class=\"keyword\">module</span> \n    <span class=\"keyword\">type</span> \n    <a href=\"Include_sections-module-type-Something.html\">Something</a>\n   </span>\n   <span> = <span class=\"keyword\">sig</span> ... \n    <span class=\"keyword\">end</span>\n   </span>\n  </code>\n </div><div class=\"spec-doc\"><p>A module type.</p></div>\n</div><p>Let's include \n <a href=\"Include_sections-module-type-Something.html\"><code>Something</code>\n </a> once\n</p><h2 id=\"something-1_2\"><a href=\"#something-1_2\" class=\"anchor\"></a>Something\n  1\n</h2><p>foo</p><h3 id=\"something-2_2\"><a href=\"#something-2_2\" class=\"anchor\"></a>Something\n  2\n</h3><h2 id=\"something-1-bis_2\"><a href=\"#something-1-bis_2\" class=\"anchor\"></a>\n Something 1-bis\n</h2><p>Some text.</p><h2 id=\"second-include\"><a href=\"#second-include\" class=\"anchor\"></a>\n Second include\n</h2><p>Let's include \n <a href=\"Include_sections-module-type-Something.html\"><code>Something</code>\n </a> a second time: the heading level should be shift here.\n</p><h3 id=\"something-1_3\"><a href=\"#something-1_3\" class=\"anchor\"></a>Something\n  1\n</h3><p>foo</p><h4 id=\"something-2_3\"><a href=\"#something-2_3\" class=\"anchor\"></a>Something\n  2\n</h4><h3 id=\"something-1-bis_3\"><a href=\"#something-1-bis_3\" class=\"anchor\"></a>\n Something 1-bis\n</h3><p>Some text.</p><h3 id=\"third-include\"><a href=\"#third-include\" class=\"anchor\"></a>Third\n  include\n</h3><p>Shifted some more.</p><h4 id=\"something-1_4\"><a href=\"#something-1_4\" class=\"anchor\"></a>Something\n  1\n</h4><p>foo</p><h5 id=\"something-2_4\"><a href=\"#something-2_4\" class=\"anchor\"></a>Something\n  2\n</h5><h4 id=\"something-1-bis_4\"><a href=\"#something-1-bis_4\" class=\"anchor\"></a>\n Something 1-bis\n</h4><p>Some text.</p><p>And let's include it again, but without inlining it this time: the\n  ToC shouldn't grow.\n</p><div class=\"odoc-include\">\n <details open=\"open\">\n  <summary class=\"spec include\">\n   <code>\n    <span><span class=\"keyword\">include</span> \n     <a href=\"Include_sections-module-type-Something.html\">Something</a>\n    </span>\n   </code>\n  </summary>\n  <div class=\"odoc-spec\">\n   <div class=\"spec value anchored\" id=\"val-something\">\n    <a href=\"#val-something\" class=\"anchor\"></a>\n    <code><span><span class=\"keyword\">val</span> something : unit</span>\n    </code>\n   </div>\n  </div>\n  <h2 id=\"something-1_5\"><a href=\"#something-1_5\" class=\"anchor\"></a>\n   Something 1\n  </h2><p>foo</p>\n  <div class=\"odoc-spec\">\n   <div class=\"spec value anchored\" id=\"val-foo\">\n    <a href=\"#val-foo\" class=\"anchor\"></a>\n    <code><span><span class=\"keyword\">val</span> foo : unit</span></code>\n   </div>\n  </div>\n  <h3 id=\"something-2_5\"><a href=\"#something-2_5\" class=\"anchor\"></a>\n   Something 2\n  </h3>\n  <div class=\"odoc-spec\">\n   <div class=\"spec value anchored\" id=\"val-bar\">\n    <a href=\"#val-bar\" class=\"anchor\"></a>\n    <code><span><span class=\"keyword\">val</span> bar : unit</span></code>\n   </div><div class=\"spec-doc\"><p>foo bar</p></div>\n  </div>\n  <h2 id=\"something-1-bis_5\"><a href=\"#something-1-bis_5\" class=\"anchor\"></a>\n   Something 1-bis\n  </h2><p>Some text.</p>\n </details>\n</div>"
+}

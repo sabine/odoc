@@ -1,3 +1,8 @@
+Additions
+- New renderer `html-embeddable` that emits HTML fragments (preamble, content)
+  together with metadata (Table of contents, breadcrumbs, whether katex is
+  used).
+
 2.1.0
 -----
 

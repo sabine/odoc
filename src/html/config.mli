@@ -1,34 +1,46 @@
 (* HTML renderer configuration *)
 
-type t
+module Base : sig
+  type t = {
+    semantic_uris : bool;
+    indent : bool;
+    flat : bool;
+    open_details : bool;
+  }
 
-val v :
-  ?theme_uri:Types.uri ->
-  ?support_uri:Types.uri ->
-  semantic_uris:bool ->
-  indent:bool ->
-  flat:bool ->
-  open_details:bool ->
-  omit_breadcrumbs:bool ->
-  omit_toc:bool ->
-  content_only:bool ->
-  unit ->
-  t
+  val v :
+    semantic_uris:bool ->
+    indent:bool ->
+    flat:bool ->
+    open_details:bool ->
+    unit ->
+    t
+end
 
-val theme_uri : t -> Types.uri
+module Html_page : sig
+  type t = {
+    base : Base.t;
+    theme_uri : Types.uri option;
+    support_uri : Types.uri option;
+    omit_breadcrumbs : bool;
+    omit_toc : bool;
+    content_only : bool;
+  }
 
-val support_uri : t -> Types.uri
+  val v :
+    ?theme_uri:Types.uri ->
+    ?support_uri:Types.uri ->
+    semantic_uris:bool ->
+    indent:bool ->
+    flat:bool ->
+    open_details:bool ->
+    omit_breadcrumbs:bool ->
+    omit_toc:bool ->
+    content_only:bool ->
+    unit ->
+    t
 
-val semantic_uris : t -> bool
+  val get_theme_uri : t -> Types.uri
 
-val indent : t -> bool
-
-val flat : t -> bool
-
-val open_details : t -> bool
-
-val omit_breadcrumbs : t -> bool
-
-val omit_toc : t -> bool
-
-val content_only : t -> bool
+  val get_support_uri : t -> Types.uri
+end

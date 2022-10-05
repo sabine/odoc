@@ -10,3 +10,5 @@ type toc = {
   href : string;
   children : toc list;
 }
+
+type breadcrumb = { href : string; name : string }

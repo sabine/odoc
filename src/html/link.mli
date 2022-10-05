@@ -4,7 +4,7 @@ module Url = Odoc_document.Url
 
 type resolve = Current of Url.Path.t | Base of string
 
-val href : config:Config.t -> resolve:resolve -> Url.t -> string
+val href : config:Config.Base.t -> resolve:resolve -> Url.t -> string
 
 module Path : sig
   val is_leaf_page : Url.Path.t -> bool
