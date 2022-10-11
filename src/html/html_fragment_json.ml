@@ -1,22 +1,12 @@
-(* Rendering of HTML fragments together with metadata for
-   embedding docs in existing websites
+(* Rendering of HTML fragments together with metadata. For embedding the
+   generated documentation in existing websites.
 *)
 
 module Html = Tyxml.Html
 
-let string_of_kind kind =
-  match kind with
-  | `BaseModule -> "BaseModule"
-  | `Module -> "Module"
-  | `Argument -> "Parameter"
-  | `ModuleType -> "ModuleType"
-  | `ClassType -> "ClassType"
-  | `Class -> "Class"
-  | `Page -> "Page"
-
 let json_of_breadcrumbs (breadcrumbs : Types.breadcrumb list) : Utils.Json.json =
   let breadcrumb (b : Types.breadcrumb) =
-    `Object [ ("name", `String b.name); ("href", `String b.href) ]
+    `Object [ ("name", `String b.name); ("href", `String b.href); ("kind", `String (Odoc_document.Url.Path.string_of_kind b.kind)) ]
   in
   let json_breadcrumbs = breadcrumbs |> List.map breadcrumb in
   `Array json_breadcrumbs
@@ -33,9 +23,10 @@ let json_of_toc (toc : Types.toc list) : Utils.Json.json =
   let toc_json_list = toc |> List.map section in
   `Array toc_json_list
 
-let make ~config:{Config.Base.flat; indent ; _} ~preamble ~url ~kind ~breadcrumbs ~toc ~uses_katex ~title
+let make ~config:{Config.flat; indent ; _} ~preamble ~url ~breadcrumbs ~toc ~uses_katex ~title
     content children =
   let filename = Link.Path.as_filename ~is_flat:flat url in
+  let filename = Fpath.add_ext ".json" filename in
   let htmlpp = Html.pp_elt ~indent () in
   let json_to_string json =
     Utils.Json.to_string json
@@ -47,7 +38,6 @@ let make ~config:{Config.Base.flat; indent ; _} ~preamble ~url ~kind ~breadcrumb
            [
              ("uses_katex", `Bool uses_katex);
              ("title", `String title);
-             ("kind", `String (string_of_kind kind));
              ("breadcrumbs", json_of_breadcrumbs breadcrumbs);
              ("toc", json_of_toc toc);
              ( "preamble",

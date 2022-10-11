@@ -1,7 +1,7 @@
 Additions
-- New renderer `html-embeddable` that emits HTML fragments (preamble, content)
-  together with metadata (Table of contents, breadcrumbs, whether katex is
-  used).
+- New option `--as-json` for the HTML renderer that emits HTML fragments
+  (preamble, content) together with metadata (Table of contents, breadcrumbs,
+  whether katex is used) in JSON format.
 
 2.1.0
 -----

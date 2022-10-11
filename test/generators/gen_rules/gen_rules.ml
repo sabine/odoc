@@ -15,19 +15,6 @@ let html_target_rule path =
     Gen_rules_lib.Dune.arg_dep path;
   ]
 
-let html_embeddable_target_rule path =
-  [
-    "odoc";
-    "html-embeddable-generate";
-    "--indent";
-    "--flat";
-    "--extra-suffix";
-    "gen";
-    "-o";
-    ".";
-    Gen_rules_lib.Dune.arg_dep path;
-  ]
-
 let latex_target_rule path =
   [
     "odoc";
@@ -112,7 +99,6 @@ let () =
     Gen_rules_lib.gen_rule
       [
         (html_target_rule, Fpath.v "html", Some "--flat");
-        (html_embeddable_target_rule, Fpath.v "html-embeddable", Some "--flat");
         (latex_target_rule, Fpath.v "latex", None);
         (man_target_rule, Fpath.v "man", None);
       ]

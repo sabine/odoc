@@ -16,4 +16,4 @@
 
 open Odoc_document
 
-val renderer : Odoc_html.Config.Html_page.t Renderer.t
+val renderer : Odoc_html.Config.t Renderer.t

@@ -70,8 +70,8 @@ let html_of_breadcrumbs (breadcrumbs : Types.breadcrumb list) =
         (List.rev html @ sep @ [ Html.txt current.name ])
 
 let page_creator ~config ~url ~uses_katex name header breadcrumbs toc content =
-  let theme_uri = Config.Html_page.get_theme_uri config in
-  let support_uri = Config.Html_page.get_support_uri config in
+  let theme_uri = Config.get_theme_uri config in
+  let support_uri = Config.get_support_uri config in
   let path = Link.Path.for_printing url in
 
   let head : Html_types.head Html.elt =
@@ -85,7 +85,7 @@ let page_creator ~config ~url ~uses_katex name header breadcrumbs toc content =
             Odoc_document.Url.Path.{ kind = `File; parent = uri; name = file }
           in
           Link.href
-            ~config:config.base
+            ~config
             ~resolve:(Current url)
             (Odoc_document.Url.from_path page)
     in
@@ -140,33 +140,21 @@ let page_creator ~config ~url ~uses_katex name header breadcrumbs toc content =
     Html.head (Html.title (Html.txt title_string)) meta_elements
   in
 
-  let breadcrumbs =
-    if config.omit_breadcrumbs then []
-    else html_of_breadcrumbs breadcrumbs
-  in
-  let toc = if config.omit_toc then [] else html_of_toc toc in
   let body =
-    breadcrumbs
+    html_of_breadcrumbs breadcrumbs
     @ [ Html.header ~a:[ Html.a_class [ "odoc-preamble" ] ] header ]
-    @ toc
+    @ html_of_toc toc
     @ [ Html.div ~a:[ Html.a_class [ "odoc-content" ] ] content ]
   in
-  let htmlpp_elt = Html.pp_elt ~indent:config.base.indent () in
-  let htmlpp = Html.pp ~indent:config.base.indent () in
-  if config.content_only then
-    let content ppf =
-      htmlpp_elt ppf (Html.div ~a:[ Html.a_class [ "odoc" ] ] body)
-    in
-    content
-  else
-    let html = Html.html head (Html.body ~a:[ Html.a_class [ "odoc" ] ] body) in
-    let content ppf = htmlpp ppf html in
-    content
+  let htmlpp = Html.pp ~indent:config.indent () in
+  let html = Html.html head (Html.body ~a:[ Html.a_class [ "odoc" ] ] body) in
+  let content ppf = htmlpp ppf html in
+  content
 
-let make ~(config: Config.Html_page.t) ~url ~header ~breadcrumbs ~toc ~uses_katex title content
+let make ~(config: Config.t) ~url ~header ~breadcrumbs ~toc ~uses_katex title content
     children =
   let filename =
-    Link.Path.as_filename ~is_flat:config.base.flat url
+    Link.Path.as_filename ~is_flat:config.flat url
   in
   let content =
     page_creator ~config ~url ~uses_katex title header breadcrumbs toc content

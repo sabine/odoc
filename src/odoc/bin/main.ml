@@ -434,82 +434,8 @@ end = struct
       "latex-url"
 end
 
-module Odoc_html_fragment_args = struct
-  type args = Odoc_html.Config.Base.t
-
-  let renderer = Html_fragment.renderer
-
-  let semantic_uris =
-    let doc = "Generate pretty (semantic) links" in
-    Arg.(value & flag (info ~doc [ "semantic-uris"; "pretty-uris" ]))
-
-  let closed_details =
-    let doc =
-      "If this flag is passed <details> tags (used for includes) will be \
-       closed by default."
-    in
-    Arg.(value & flag (info ~doc [ "closed-details" ]))
-
-  let indent =
-    let doc = "Format the output files with indentation" in
-    Arg.(value & flag (info ~doc [ "indent" ]))
-
-  (* Very basic validation and normalization for URI paths. *)
-  let convert_uri : Odoc_html.Types.uri Arg.conv =
-    let parser str =
-      if String.length str = 0 then `Error "invalid URI"
-      else
-        (* The URI is absolute if it starts with a scheme or with '/'. *)
-        let is_absolute =
-          List.exists [ "http"; "https"; "file"; "data"; "ftp" ]
-            ~f:(fun scheme ->
-              Astring.String.is_prefix ~affix:(scheme ^ ":") str)
-          || str.[0] = '/'
-        in
-        let last_char = str.[String.length str - 1] in
-        let str =
-          if last_char <> '/' then str
-          else String.sub str ~pos:0 ~len:(String.length str - 1)
-        in
-        let conv_rel rel =
-          let l = Astring.String.cuts ~sep:"/" rel in
-          List.fold_left
-            ~f:(fun acc seg ->
-              Some
-                Odoc_document.Url.Path.
-                  { kind = `Page; parent = acc; name = seg })
-            l ~init:None
-        in
-        `Ok
-          Odoc_html.Types.(
-            if is_absolute then Absolute str else Relative (conv_rel str))
-    in
-    let printer ppf = function
-      | Odoc_html.Types.Absolute uri -> Format.pp_print_string ppf uri
-      | Odoc_html.Types.Relative _uri -> Format.pp_print_string ppf ""
-    in
-    (parser, printer)
-
-  let flat =
-    let doc =
-      "Output files in 'flat' mode, where the heirarchy of modules / module \
-       types / classes and class types are reflected in the filenames rather \
-       than in the directory structure"
-    in
-    Arg.(value & flag & info ~docs ~doc [ "flat" ])
-
-  let extra_args =
-    let config semantic_uris closed_details indent flat =
-      let open_details = not closed_details in
-      Odoc_html.Config.Base.v ~semantic_uris ~indent ~flat ~open_details ()
-    in
-    Term.(const config $ semantic_uris $ closed_details $ indent $ flat)
-end
-
-module Odoc_html_fragment = Make_renderer (Odoc_html_fragment_args)
-
 module Odoc_html_args = struct
-  type args = Odoc_html.Config.Html_page.t
+  type args = Odoc_html.Config.t
 
   let renderer = Html_page.renderer
 
@@ -584,36 +510,28 @@ module Odoc_html_args = struct
 
   let flat =
     let doc =
-      "Output HTML files in 'flat' mode, where the heirarchy of modules / \
+      "Output HTML files in 'flat' mode, where the hierarchy of modules / \
        module types / classes and class types are reflected in the filenames \
-       rather than in the directory structure"
+       rather than in the directory structure."
     in
     Arg.(value & flag & info ~docs ~doc [ "flat" ])
 
-  let omit_breadcrumbs =
-    let doc = "Don't emit the breadcrumbs navigation element" in
-    Arg.(value & flag & info ~docs ~doc [ "omit-breadcrumbs" ])
-
-  let omit_toc =
-    let doc = "Don't emit the table of contents div" in
-    Arg.(value & flag & info ~docs ~doc [ "omit-toc" ])
-
-  let content_only =
+  let as_json =
     let doc =
-      "Only emit the content of the page, not the html, head and body elements"
+      "Output HTML files in 'embeddable json' mode, where HTML fragments \
+      together with metadata will be output in JSON format."
     in
-    Arg.(value & flag & info ~docs ~doc [ "content-only" ])
+    Arg.(value & flag & info ~doc [ "as-json" ])
 
   let extra_args =
-    let config semantic_uris closed_details indent theme_uri support_uri flat
-        omit_breadcrumbs omit_toc content_only =
+    let config semantic_uris closed_details indent theme_uri support_uri flat as_json =
       let open_details = not closed_details in
-      Odoc_html.Config.Html_page.v ~theme_uri ~support_uri ~semantic_uris
-        ~indent ~flat ~open_details ~omit_breadcrumbs ~omit_toc ~content_only ()
+      Odoc_html.Config.v ~theme_uri ~support_uri ~semantic_uris
+        ~indent ~flat ~open_details ~as_json ()
     in
     Term.(
       const config $ semantic_uris $ closed_details $ indent $ theme_uri
-      $ support_uri $ flat $ omit_breadcrumbs $ omit_toc $ content_only)
+      $ support_uri $ flat $ as_json )
 end
 
 module Odoc_html = Make_renderer (Odoc_html_args)
@@ -638,7 +556,7 @@ end = struct
   let cmd =
     Term.(
       const handle_error
-      $ (const reference_to_url $ Odoc_html_fragment_args.extra_args $ root_url
+      $ (const reference_to_url $ Odoc_html_args.extra_args $ root_url
        $ odoc_file_directories $ reference))
 
   let info =
@@ -865,9 +783,6 @@ let () =
       Odoc_html.process;
       Odoc_html.targets;
       Odoc_html.generate;
-      Odoc_html_fragment.process;
-      Odoc_html_fragment.targets;
-      Odoc_html_fragment.generate;
       Odoc_manpage.process;
       Odoc_manpage.targets;
       Odoc_manpage.generate;

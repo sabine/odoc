@@ -15,14 +15,11 @@ check it's got the expected content by looking for 'type-t'
       <div class="spec type anchored" id="type-t">
        <a href="#type-t" class="anchor"></a>
 
-Generate again, this time omitting the breadcrumbs:
+Generate 'embeddable HTML fragment' output:
 
-  $ odoc html-generate test.odocl -o html --omit-breadcrumbs --indent
-  $ grep odoc-nav html/test/Test/index.html
-  [1]
-  $ grep type-t html/test/Test/index.html
-      <div class="spec type anchored" id="type-t">
-       <a href="#type-t" class="anchor"></a>
+  $ odoc html-generate test.odocl -o html --as-json --indent
+  $ grep type-t html/test/Test/index.html.json
+  {"uses_katex":false,"title":"Test","kind":"BaseModule","breadcrumbs":[{"name":"test","href":"../index.html"},{"name":"Test","href":"#"}],"toc":[{"title":"Section 1","href":"#section-1","children":[]},{"title":"Section 2","href":"#section-2","children":[]}],"preamble":"<p>Test</p>","content":"<h2 id=\"section-1\"><a href=\"#section-1\" class=\"anchor\"></a>Section 1</h2><div class=\"odoc-spec\">\u000A <div class=\"spec type anchored\" id=\"type-t\">\u000A  <a href=\"#type-t\" class=\"anchor\"></a>\u000A  <code><span><span class=\"keyword\">type</span> t</span></code>\u000A </div>\u000A</div><h2 id=\"section-2\"><a href=\"#section-2\" class=\"anchor\"></a>Section 2</h2><div class=\"odoc-spec\">\u000A <div class=\"spec type anchored\" id=\"type-u\">\u000A  <a href=\"#type-u\" class=\"anchor\"></a>\u000A  <code><span><span class=\"keyword\">type</span> u</span></code>\u000A </div>\u000A</div>"}
 
 Check semantic_uris:
   $ odoc html-generate test2.odocl -o html --indent
@@ -31,18 +28,3 @@ Check semantic_uris:
   $ odoc html-generate test2.odocl -o html --semantic-uris --indent
   $ grep Test.t html/test/Test2/index.html
          <a href="../Test/#type-t">Test.t</a>
-
-Check omission of toc:
-  $ odoc html-generate test.odocl -o html --indent
-  $ grep odoc-toc html/test/Test/index.html
-    <nav class="odoc-toc">
-  $ odoc html-generate test.odocl -o html --indent --omit-toc
-  $ grep odoc-toc html/test/Test/index.html
-  [1]
-
-Check content-only output:
-  $ odoc html-generate test.odocl -o html --indent --content-only
-  $ head -n 1 html/test/Test/index.html
-  <div class="odoc">
- 
-

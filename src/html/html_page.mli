@@ -21,7 +21,7 @@ module Html = Tyxml.Html
 (** {1 Page creator} *)
 
 val make :
-  config:Config.Html_page.t ->
+  config:Config.t ->
   url:Odoc_document.Url.Path.t ->
   header:Html_types.flow5_without_header_footer Html.elt list ->
   breadcrumbs:Types.breadcrumb list ->

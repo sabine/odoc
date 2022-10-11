@@ -33,5 +33,3 @@ val from_mld :
 
     Cross-reference resolution uses the provided [xref_base_uri] to locate docset
     packages. *)
-
-val renderer : Odoc_html.Config.Base.t Odoc_document.Renderer.t

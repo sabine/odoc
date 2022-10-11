@@ -387,13 +387,12 @@ module Breadcrumbs = struct
           | Some x -> x :: get_parent_paths xs
           | None -> get_parent_paths xs)
     in
-    let to_breadcrumb breadcrumb_url =
+    let to_breadcrumb path =
       let href =
         Link.href ~config ~resolve:(Current url)
-          (Odoc_document.Url.from_path breadcrumb_url)
+          (Odoc_document.Url.from_path path)
       in
-      let name = breadcrumb_url.name in
-      { href; name }
+      { href; name = path.name; kind = path.kind }
     in
     get_parent_paths (List.rev (Odoc_document.Url.Path.to_list url))
     |> List.rev |> List.map to_breadcrumb
@@ -409,47 +408,11 @@ module Page = struct
 
   let rec include_ ~config { Subpage.content; _ } = page ~config content
 
-  and subpages ~(config : Config.Html_page.t) subpages =
+  and subpages ~(config : Config.t) subpages =
     Utils.list_concat_map ~f:(include_ ~config) subpages
 
   and page ~config p : Odoc_document.Renderer.page list =
-    let { Page.preamble; items = i; url } = Doctree.Labels.disambiguate_page p
-    and subpages =
-      (* Don't use the output of [disambiguate_page] to avoid unecessarily
-         mangled labels. *)
-      subpages ~config @@ Doctree.Subpages.compute p
-    in
-    let resolve = Link.Current url in
-    let i = Doctree.Shift.compute ~on_sub i in
-    let uses_katex = Doctree.Math.has_math_elements p in
-    let toc = Toc.gen_toc ~config:config.base ~resolve ~path:url i in
-    let breadcrumbs = Breadcrumbs.gen_breadcrumbs ~config:config.base ~url in
-    let content = (items ~config:config.base ~resolve i :> any Html.elt list) in
-    let header =
-      items ~config:config.base ~resolve
-        (Doctree.PageTitle.render_title p @ preamble)
-    in
-    Html_page.make ~config ~header ~toc ~breadcrumbs ~url ~uses_katex title
-      content subpages
-end
-
-let render ~config page = Page.page ~config page
-
-module Meta = struct
-  let on_sub = function
-    | `Page _ -> None
-    | `Include x -> (
-        match x.Include.status with
-        | `Closed | `Open | `Default -> None
-        | `Inline -> Some 0)
-
-  let rec include_ ~config { Subpage.content; _ } = page ~config content
-
-  and subpages ~(config : Config.Base.t) subpages =
-    Utils.list_concat_map ~f:(include_ ~config) subpages
-
-  and page ~config p : Odoc_document.Renderer.page list =
-    let { Odoc_document.Types.Page.title; kind; preamble; items = i; url } =
+    let { Page.preamble; items = i; url } =
       Doctree.Labels.disambiguate_page p
     and subpages =
       (* Don't use the output of [disambiguate_page] to avoid unecessarily
@@ -462,12 +425,19 @@ module Meta = struct
     let toc = Toc.gen_toc ~config ~resolve ~path:url i in
     let breadcrumbs = Breadcrumbs.gen_breadcrumbs ~config ~url in
     let content = (items ~config ~resolve i :> any Html.elt list) in
-    Html_fragment_json.make ~config
-      ~preamble:(items ~config ~resolve preamble :> any Html.elt list)
-      ~breadcrumbs ~toc ~url ~kind ~uses_katex ~title content subpages
+    let header =
+      items ~config ~resolve (Doctree.PageTitle.render_title p @ preamble)
+    in
+    if config.as_json then
+      Html_fragment_json.make ~config
+        ~preamble:(items ~config ~resolve preamble :> any Html.elt list)
+        ~breadcrumbs ~toc ~url ~uses_katex ~title:p.url.name content subpages
+    else
+      Html_page.make ~config ~header ~toc ~breadcrumbs ~url ~uses_katex p.url.name
+        content subpages
 end
 
-let render_fragment_with_meta ~config page = Meta.page ~config page
+let render ~config page = Page.page ~config page
 
 let doc ~config ~xref_base_uri b =
   let resolve = Link.Base xref_base_uri in
