@@ -16,7 +16,7 @@
 
 module Html = Tyxml.Html
 
-let html_of_toc (toc : Types.toc list) =
+let html_of_toc toc =
   let open Types in
   let rec section (section : toc) =
     let link = Html.a ~a:[ Html.a_href section.href ] section.title in
@@ -69,13 +69,15 @@ let html_of_breadcrumbs (breadcrumbs : Types.breadcrumb list) =
       make_navigation ~up_url:up.href
         (List.rev html @ sep @ [ Html.txt current.name ])
 
-let page_creator ~config ~url ~uses_katex name header breadcrumbs toc content =
-  let theme_uri = Config.get_theme_uri config in
-  let support_uri = Config.get_support_uri config in
+let page_creator ~config ~url ~uses_katex header breadcrumbs toc content =
+  let theme_uri = Config.theme_uri config in
+  let support_uri = Config.support_uri config in
   let path = Link.Path.for_printing url in
 
   let head : Html_types.head Html.elt =
-    let title_string = Printf.sprintf "%s (%s)" name (String.concat "." path) in
+    let title_string =
+      Printf.sprintf "%s (%s)" url.name (String.concat "." path)
+    in
 
     let file_uri base file =
       match base with
@@ -84,9 +86,7 @@ let page_creator ~config ~url ~uses_katex name header breadcrumbs toc content =
           let page =
             Odoc_document.Url.Path.{ kind = `File; parent = uri; name = file }
           in
-          Link.href
-            ~config
-            ~resolve:(Current url)
+          Link.href ~config ~resolve:(Current url)
             (Odoc_document.Url.from_path page)
     in
 
@@ -146,17 +146,14 @@ let page_creator ~config ~url ~uses_katex name header breadcrumbs toc content =
     @ html_of_toc toc
     @ [ Html.div ~a:[ Html.a_class [ "odoc-content" ] ] content ]
   in
-  let htmlpp = Html.pp ~indent:config.indent () in
+  let htmlpp = Html.pp ~indent:(Config.indent config) () in
   let html = Html.html head (Html.body ~a:[ Html.a_class [ "odoc" ] ] body) in
   let content ppf = htmlpp ppf html in
   content
 
-let make ~(config: Config.t) ~url ~header ~breadcrumbs ~toc ~uses_katex title content
-    children =
-  let filename =
-    Link.Path.as_filename ~is_flat:config.flat url
-  in
+let make ~config ~url ~header ~breadcrumbs ~toc ~uses_katex content children =
+  let filename = Link.Path.as_filename ~is_flat:(Config.flat config) url in
   let content =
-    page_creator ~config ~url ~uses_katex title header breadcrumbs toc content
+    page_creator ~config ~url ~uses_katex header breadcrumbs toc content
   in
   [ { Odoc_document.Renderer.filename; content; children } ]

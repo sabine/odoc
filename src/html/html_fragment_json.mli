@@ -7,7 +7,6 @@ val make :
   breadcrumbs:Types.breadcrumb list ->
   toc:Types.toc list ->
   uses_katex:bool ->
-  title:string ->
   Html_types.div_content Html.elt list ->
   Odoc_document.Renderer.page list ->
   Odoc_document.Renderer.page list

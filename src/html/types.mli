@@ -11,4 +11,8 @@ type toc = {
   children : toc list;
 }
 
-type breadcrumb = { href : string; name : string; kind: Odoc_document.Url.Path.kind }
+type breadcrumb = {
+  href : string;
+  name : string;
+  kind : Odoc_document.Url.Path.kind;
+}

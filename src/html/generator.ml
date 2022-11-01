@@ -333,7 +333,7 @@ and items ~config ~resolve l : item Html.elt list =
           | `Inline -> doc @ included_html
           | `Closed -> details ~open':false
           | `Open -> details ~open':true
-          | `Default -> details ~open':config.open_details
+          | `Default -> details ~open':(Config.open_details config)
         in
         (continue_with [@tailcall]) rest content
     | Declaration { Item.attr; anchor; content; doc } :: rest ->
@@ -408,12 +408,11 @@ module Page = struct
 
   let rec include_ ~config { Subpage.content; _ } = page ~config content
 
-  and subpages ~(config : Config.t) subpages =
+  and subpages ~config subpages =
     Utils.list_concat_map ~f:(include_ ~config) subpages
 
   and page ~config p : Odoc_document.Renderer.page list =
-    let { Page.preamble; items = i; url } =
-      Doctree.Labels.disambiguate_page p
+    let { Page.preamble; items = i; url } = Doctree.Labels.disambiguate_page p
     and subpages =
       (* Don't use the output of [disambiguate_page] to avoid unecessarily
          mangled labels. *)
@@ -424,17 +423,17 @@ module Page = struct
     let uses_katex = Doctree.Math.has_math_elements p in
     let toc = Toc.gen_toc ~config ~resolve ~path:url i in
     let breadcrumbs = Breadcrumbs.gen_breadcrumbs ~config ~url in
-    let content = (items ~config ~resolve i :> any Html.elt list) in
     let header =
       items ~config ~resolve (Doctree.PageTitle.render_title p @ preamble)
     in
-    if config.as_json then
+    let content = (items ~config ~resolve i :> any Html.elt list) in
+    if Config.as_json config then
       Html_fragment_json.make ~config
         ~preamble:(items ~config ~resolve preamble :> any Html.elt list)
-        ~breadcrumbs ~toc ~url ~uses_katex ~title:p.url.name content subpages
+        ~breadcrumbs ~toc ~url ~uses_katex content subpages
     else
-      Html_page.make ~config ~header ~toc ~breadcrumbs ~url ~uses_katex p.url.name
-        content subpages
+      Html_page.make ~config ~header ~toc ~breadcrumbs ~url ~uses_katex content
+        subpages
 end
 
 let render ~config page = Page.page ~config page

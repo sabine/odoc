@@ -518,23 +518,26 @@ module Odoc_html_args = struct
 
   let as_json =
     let doc =
-      "Output HTML files in 'embeddable json' mode, where HTML fragments \
-      together with metadata will be output in JSON format."
+      "EXPERIMENTAL: Output HTML files in 'embeddable json' mode, where HTML \
+       fragments (preamble, content) together with metadata (uses_katex, breadcrumbs, \
+       table of contents) are emitted in JSON format."
     in
     Arg.(value & flag & info ~doc [ "as-json" ])
 
   let extra_args =
-    let config semantic_uris closed_details indent theme_uri support_uri flat as_json =
+    let config semantic_uris closed_details indent theme_uri support_uri flat
+        as_json =
       let open_details = not closed_details in
-      Odoc_html.Config.v ~theme_uri ~support_uri ~semantic_uris
-        ~indent ~flat ~open_details ~as_json ()
+      Odoc_html.Config.v ~theme_uri ~support_uri ~semantic_uris ~indent ~flat
+        ~open_details ~as_json ()
     in
     Term.(
       const config $ semantic_uris $ closed_details $ indent $ theme_uri
-      $ support_uri $ flat $ as_json )
+      $ support_uri $ flat $ as_json)
 end
 
 module Odoc_html = Make_renderer (Odoc_html_args)
+
 module Odoc_html_url : sig
   val cmd : unit Term.t
 
@@ -609,7 +612,7 @@ end = struct
        $ input $ warnings_options))
 
   let info =
-    Term.info ~doc:"Generates an html fragment file from an mld one."
+    Term.info ~doc:"Generates an html fragment file from an mld one"
       "html-fragment"
 end
 

@@ -45,10 +45,10 @@ let rec drop_shared_prefix l1 l2 =
   | l1 :: l1s, l2 :: l2s when l1 = l2 -> drop_shared_prefix l1s l2s
   | _, _ -> (l1, l2)
 
-let href ~config:{ Config.flat; semantic_uris; _ } ~resolve t =
+let href ~config ~resolve t =
   let { Url.Anchor.page; anchor; _ } = t in
 
-  let target_loc = Path.for_linking ~is_flat:flat page in
+  let target_loc = Path.for_linking ~is_flat:(Config.flat config) page in
 
   (* If xref_base_uri is defined, do not perform relative URI resolution. *)
   match resolve with
@@ -56,7 +56,7 @@ let href ~config:{ Config.flat; semantic_uris; _ } ~resolve t =
       let page = xref_base_uri ^ String.concat "/" target_loc in
       match anchor with "" -> page | anchor -> page ^ "#" ^ anchor)
   | Current path -> (
-      let current_loc = Path.for_linking ~is_flat:flat path in
+      let current_loc = Path.for_linking ~is_flat:(Config.flat config) path in
 
       let current_from_common_ancestor, target_from_common_ancestor =
         drop_shared_prefix current_loc target_loc
@@ -83,7 +83,7 @@ let href ~config:{ Config.flat; semantic_uris; _ } ~resolve t =
         | _ -> l
       in
       let relative_target =
-        if semantic_uris then remove_index_html relative_target
+        if Config.semantic_uris config then remove_index_html relative_target
         else relative_target
       in
       match (relative_target, anchor) with
